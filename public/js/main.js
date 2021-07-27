@@ -99,6 +99,8 @@ $(function() {
 	function buildBusinesses(data) {
 		//build UI with business data.
 		
+		$(".card").remove();
+		
 		for (var i = 0; i < data.businesses.length; i++) {
 			
 			var $bus = data.businesses[i]; 

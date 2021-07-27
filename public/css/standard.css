@@ -6,7 +6,11 @@ body {
 	background-color: white;
 	box-shadow: 0.5em 0.5em 0.5em #C1E6D5; 
 	margin-bottom: 1.5em; 
-	
+		
+}
+
+#business-card {
+	display: none; 
 }
 
 .container {
