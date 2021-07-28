@@ -41,3 +41,7 @@ body {
 	
 }
 
+#pages > a {
+	padding-right: 0.25em; 
+}
+

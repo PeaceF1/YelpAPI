@@ -1,6 +1,44 @@
 $(function() {
 	
+	var offset = 0;
+	var limit = 25;
+	var page; 
+	
 	$("#search").keypress(keywordSearch);
+	$("#pages").on("click", "a", changePage); 
+	
+	function changePage() {
+		offset = parseInt($(this).attr("href"));
+		
+		var term = $("#search").val();
+		getBusinesses(term, offset, limit);
+		return false;  
+	}
+	
+	function buildPages(total) {
+		var numPages = 0;
+		
+		//no remainders
+		if (total % limit == 0) {
+			numPages = Math.floor(total / limit);
+		} else {
+			//we have a remainder
+			numPages = Math.floor(total / limit) + 1;  			
+		}
+		
+		//2-1= 1
+		//25
+		
+		$("#pages").empty();
+		for (var i = 1; i <= numPages; i++) {
+			var $a = $("<a/>");
+			$a.text(i);
+			$a.attr("href", (i - 1) * limit); 
+			$("#pages").append($a); 
+		}
+	
+		
+	}
 	
 	//jTu8alO6FZH6ssi7GQkUNA
 	getBusiness("jTu8alO6FZH6ssi7GQkUNA"); //specific business id
@@ -22,8 +60,8 @@ $(function() {
 			error: ajaxError,
 			success: function(data) {
 				console.log(data);
-				console.log(data.reviews[0].text);
-				console.log(data.reviews[0].user); 
+				console.log(data.reviews[1].text);
+				console.log(data.reviews[1].user); 
 			}
 		}); 
 	}
@@ -63,7 +101,7 @@ $(function() {
 	
 	
 	
-	function getBusinesses (keyword) {
+	function getBusinesses (keyword, offset, limit) {
 		
 			
 		$.ajax({
@@ -82,6 +120,7 @@ $(function() {
 			success: function(data) {
 				console.log(data); 
 				buildBusinesses(data); 
+				buildPages(data.total); 
 				
 				
 			}
