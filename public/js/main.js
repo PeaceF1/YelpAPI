@@ -7,8 +7,32 @@ $(function() {
 	$("#search").keypress(keywordSearch);
 	$("#pages").on("click", "a", changePage); 
 	
+	$("#next-btn").click(nextPage); //button that calls the nextPage
+	$("#prev-btn").click(prevPage);
+	
+	function nextPage() {
+		//first page: 0 + 25;
+		//second page: 25; 
+		//offset = offset + limit; 
+		offset += limit; 
+		var term = $("#search").val();
+		getBusinesses(term, offset, limit);
+	}
+	
+	function prevPage() {
+		//page 2: offset = ;
+		//page 1: offset = 25- 25 = 0; 
+		//offset = offset - limit; 
+		offset -= limit; 
+		var term = $("#search").val();
+		getBusinesses(term, offset, limit); 
+	}
+	
+	
+	
 	function changePage() {
 		offset = parseInt($(this).attr("href"));
+		console.log(offset);
 		
 		var term = $("#search").val();
 		getBusinesses(term, offset, limit);
@@ -94,7 +118,7 @@ $(function() {
 			
 			var keyword = $("#search").val();//allows you to use any keyword to pull from the API(wine, tacos) 
 			//can use var keyword = $(this).val(); 
-			getBusinesses(keyword);
+			getBusinesses(keyword, offset, limit);
 		}
 		
 	}
@@ -112,13 +136,34 @@ $(function() {
 			method: "GET",
 			dataType: "json",
 			data: {
+				
 			term: keyword,
+			offset: offset, 
+			limit: limit, 
+			
 			location: "Omaha"
 			
 			},
 			error: ajaxError,
 			success: function(data) {
 				console.log(data); 
+				
+				//check if we are at the end of pages
+				
+				//550 + 25 = 575 < 563
+				if (offset + limit < data.total) {
+					//if at end, removeClass of .show
+					$("#next-btn").addClass("show");
+					} else {
+						$("#next-btn").removeClass("show"); 
+					}
+					
+					if (offset == 0){
+						$("#prev-btn").removeClass("show");
+					} else {
+						$("#prev-btn").addClass("show"); 
+					}
+				
 				buildBusinesses(data); 
 				buildPages(data.total); 
 				

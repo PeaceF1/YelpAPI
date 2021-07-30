@@ -45,3 +45,10 @@ body {
 	padding-right: 0.25em; 
 }
 
+#next-btn, #prev-btn {
+	display: none; 
+}
+
+.show {
+	display: inline-block !important; 
+}
